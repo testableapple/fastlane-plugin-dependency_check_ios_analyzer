@@ -1,0 +1,32 @@
+name: Test
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  chat:
+    name: Checks
+    timeout-minutes: 15
+    runs-on: [macos-latest]
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Bundler
+        run: |
+          bundle config path vendor/bundle
+          bundle check || bundle install --jobs 4 --retry 3
+
+      - name: Fasterer
+        run: bundle exec fasterer
+
+      - name: Fastlane
+        run: bundle exec fastlane test
+
+      - name: "Upload DependencyCheck Reports"
+        uses: actions/upload-artifact@v2.2.2
+        if: ${{ always() }}
+        continue-on-error: true
+        with:
+          name: "DependencyCheck report"
+          path: 'dependency-check/SPM/report/'

@@ -1,0 +1,9 @@
+lane :test do
+  vulnerabilities_count = dependency_check_ios_analyzer(
+    project_name: 'SampleProject',
+    project_path: 'sample-project',
+    skip_pods_analysis: true,
+    output_types: 'html, junit',
+    fail_on_cvss: 7
+  )
+end
