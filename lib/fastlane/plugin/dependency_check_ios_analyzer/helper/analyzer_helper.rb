@@ -11,7 +11,7 @@ module Fastlane
         repo = 'https://github.com/jeremylong/DependencyCheck'
         name = 'dependency-check'
         version = params[:cli_version] ? params[:cli_version] : '6.1.6'
-        rsa_key = params[:rsa_key] ? params[:rsa_key] : 'F9514E84AE3708288374BBBE097586CFEA37F9A6'
+        gpg_key = params[:gpg_key] ? params[:gpg_key] : 'F9514E84AE3708288374BBBE097586CFEA37F9A6'
         base_url = "#{repo}/releases/download/v#{version}/#{name}-#{version}-release"
         bin_path = "#{params[:output_directory]}/#{name}/bin/#{name}.sh"
         zip_path = "#{params[:output_directory]}/#{name}.zip"
@@ -32,7 +32,7 @@ module Fastlane
           curl = Curl.get(asc_url) { |curl| curl.follow_location = true }
           File.open(asc_path, 'w+') { |f| f.write(curl.body_str) }
 
-          verify_cryptographic_integrity(asc_path: asc_path, rsa_key: rsa_key)
+          verify_cryptographic_integrity(asc_path: asc_path, gpg_key: gpg_key)
 
           unzip(file: zip_path, params: params)
 
@@ -79,10 +79,10 @@ module Fastlane
       end
 
       # https://jeremylong.github.io/DependencyCheck/dependency-check-cli/
-      def self.verify_cryptographic_integrity(asc_path:, rsa_key:)
+      def self.verify_cryptographic_integrity(asc_path:, gpg_key:)
         UI.message("🕵️  Verifying the cryptographic integrity")
         # Import the GPG key used to sign all DependencyCheck releases
-        Actions.sh("gpg --keyserver hkp://keys.gnupg.net --recv-keys #{rsa_key}")
+        Actions.sh("gpg --keyserver hkp://keys.gnupg.net --recv-keys #{gpg_key}")
         # Verify the cryptographic integrity
         Actions.sh("gpg --verify #{asc_path}")
       end
