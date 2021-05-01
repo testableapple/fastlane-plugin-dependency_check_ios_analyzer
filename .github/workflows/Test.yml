@@ -24,7 +24,7 @@ jobs:
         run: bundle exec fastlane test
 
       - name: "Upload DependencyCheck Reports"
-        uses: actions/upload-artifact@v2.2.2
+        uses: actions/upload-artifact@v2.2.3
         if: ${{ always() }}
         continue-on-error: true
         with:
