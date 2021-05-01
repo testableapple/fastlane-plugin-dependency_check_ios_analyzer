@@ -108,20 +108,20 @@ module Fastlane
             key: :output_types,
             description: 'Comma separated list of the output types (e.g. html, xml, csv, json, junit, sarif, all)',
             optional: true,
-            default_value: 'SARIF',
+            default_value: 'sarif',
             is_string: true,
             type: String
           ),
           FastlaneCore::ConfigItem.new(
             key: :cli_version,
-            description: 'Specify the required version of DependencyCheck analyzer. Not recommended',
+            description: 'Overwrite the version of DependencyCheck analyzer. Not recommended',
             optional: true,
             is_string: true,
             type: String
           ),
           FastlaneCore::ConfigItem.new(
-            key: :rsa_key,
-            description: 'Specify the RSA_KEY of DependencyCheck analyzer download. Not recommended',
+            key: :gpg_key,
+            description: 'Overwrite the GPG key to verify the cryptographic integrity of the requested cli_version',
             optional: true,
             is_string: true,
             type: String
