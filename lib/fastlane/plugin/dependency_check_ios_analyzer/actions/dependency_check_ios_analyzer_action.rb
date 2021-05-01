@@ -27,7 +27,7 @@ module Fastlane
       #####################################################
 
       def self.description
-        'Fastlane wrapper around the OWASP dependency-check Swift Package Manager and Cocoapods analyzers.'
+        'Fastlane wrapper around the OWASP dependency-check iOS analyzers (Swift Package Manager and CocoaPods).'
       end
 
       def self.authors

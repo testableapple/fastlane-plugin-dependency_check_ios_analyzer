@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.author        = 'Alexey Alter-Pesotskiy'
   spec.email         = 'a.alterpesotskiy@mail.ru'
 
-  spec.summary       = 'Fastlane wrapper around the OWASP dependency-check Swift Package Manager and Cocoapods analyzers.'
+  spec.summary       = 'Fastlane wrapper around the OWASP dependency-check iOS analyzers (Swift Package Manager and CocoaPods).'
   spec.homepage      = 'https://github.com/alteral/fastlane-plugin-dependency_check_ios_analyzer'
   spec.license       = 'MIT'
 

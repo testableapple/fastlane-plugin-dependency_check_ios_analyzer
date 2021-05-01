@@ -4,7 +4,7 @@
 
 ## About dependency_check_ios_analyzer
 
-Fastlane wrapper around the [OWASP dependency-check](https://jeremylong.github.io/DependencyCheck) [Swift Package Manager](https://jeremylong.github.io/DependencyCheck/analyzers/swift.html) and [Cocoapods](https://jeremylong.github.io/DependencyCheck/analyzers/cocoapods.html) analyzers 🚀
+Fastlane wrapper around the [OWASP dependency-check](https://jeremylong.github.io/DependencyCheck) iOS analyzers ([Swift Package Manager](https://jeremylong.github.io/DependencyCheck/analyzers/swift.html) and [CocoaPods](https://jeremylong.github.io/DependencyCheck/analyzers/cocoapods.html)).
 
 This analyzer is considered experimental. While it may be useful and provide valid results more testing must be completed to ensure that the false negative/false positive rates are acceptable.
 
@@ -18,14 +18,14 @@ This analyzer is considered experimental. While it may be useful and provide val
 | `pod_file_lock_path` | Path to the `Podfile.lock` file. **Not implemented yet** | |
 | `project_path` | Path to the directory that contains an Xcode project, workspace or package. Defaults to the `root` | |
 | `project_name` | The project's name | `DependencyCheck` |
-| `output_directory` | The directory in which all reports will be stored | dependency-check |
+| `output_directory` | The directory in which all reports will be stored | `dependency-check` |
 | `output_types` | Comma separated list of the output types (e.g. `html`, `xml`, `csv`, `json`, `junit`, `sarif`, `all`) | `sarif` |
 | `cli_version` | Overwrite the version of `DependencyCheck` analyzer | `6.1.6` |
 | `gpg_key` | Overwrite the GPG key to verify the cryptographic integrity of the requested `cli_version` | |
 | `verbose` | The file path to write verbose logging information | |
-| `fail_on_cvss` | Specifies if the build should be failed if a CVSS score above a specified level is identified. Since the CVSS scores are 0-10, by default the build will never fail | |
-| `junit_fail_on_cvss` | Specifies the CVSS score that is considered a failure when generating the junit report | |
-| `keep_binary_on_exit` | Keep `DependencyCheck` binary and data on exit | |
+| `fail_on_cvss` | Specifies if the build should be failed if a CVSS score above a specified level is identified. Since the CVSS scores are 0-10, by default the build will never fail | `11` |
+| `junit_fail_on_cvss` | Specifies the CVSS score that is considered a failure when generating the junit report | `0` |
+| `keep_binary_on_exit` | Keep `DependencyCheck` binary and data on exit | `true` |
 
 ## Requirements
 
@@ -44,7 +44,7 @@ $ fastlane add_plugin dependency_check_ios_analyzer
 
 ```ruby
 vulnerabilities_count = dependency_check_ios_analyzer(
-  output_types: 'HTML, JUNIT',
+  output_types: 'html, junit',
   fail_on_cvss: 7
 )
 ```
