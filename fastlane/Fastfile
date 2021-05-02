@@ -1,9 +1,23 @@
 lane :test do
-  vulnerabilities_count = dependency_check_ios_analyzer(
+  dependency_check_ios_analyzer(
     project_name: 'SampleProject',
     project_path: 'sample-project',
-    skip_pods_analysis: true,
-    output_types: 'html, junit',
+    output_types: 'all',
     fail_on_cvss: 7
   )
+end
+
+lane :test_on_fail do
+  begin
+    dependency_check_ios_analyzer(
+      project_name: 'SampleProject',
+      project_path: 'sample-project',
+      skip_spm_analysis: true,
+      output_types: 'html, junit',
+      fail_on_cvss: 3
+    )
+    raise("Analyzer missed the vulnerability!")
+  rescue
+    puts("it's all good!")
+  end
 end

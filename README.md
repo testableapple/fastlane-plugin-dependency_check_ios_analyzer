@@ -14,8 +14,8 @@ This analyzer is considered experimental. While it may be useful and provide val
 | ------- |---------------- | ----------- |
 | `skip_spm_analysis` | Skip analysis of `SPM` dependencies | `false` |
 | `skip_pods_analysis` | Skip analysis of `CocoaPods` dependencies | `false` |
-| `spm_checkouts_path` | Path to Swift Packages, if they are resolved | |
-| `pod_file_lock_path` | Path to the `Podfile.lock` file. **Not implemented yet** | |
+| `spm_checkouts_path` | Path to Swift Packages, if resolved | |
+| `pod_file_lock_path` | Path to the `Podfile.lock` file, if exists | |
 | `project_path` | Path to the directory that contains an Xcode project, workspace or package. Defaults to the `root` | |
 | `project_name` | The project's name | `DependencyCheck` |
 | `output_directory` | The directory in which all reports will be stored | `dependency-check` |
@@ -43,7 +43,8 @@ $ fastlane add_plugin dependency_check_ios_analyzer
 ## Usage
 
 ```ruby
-vulnerabilities_count = dependency_check_ios_analyzer(
+dependency_check_ios_analyzer(
+  project_name: 'SampleProject',
   output_types: 'html, junit',
   fail_on_cvss: 7
 )

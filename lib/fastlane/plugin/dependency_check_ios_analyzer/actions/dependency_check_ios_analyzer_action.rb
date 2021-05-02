@@ -1,25 +1,25 @@
 require 'fastlane_core/ui/ui'
 require 'fastlane/action'
+require_relative '../helper/configuration_helper'
 require_relative '../helper/analyzer_helper'
-require_relative '../helper/pods_helper'
-require_relative '../helper/spm_helper'
 
 module Fastlane
   module Actions
     class DependencyCheckIosAnalyzerAction < Action
       def self.run(params)
-        params[:output_types] = Helper::AnalyzerHelper.parse_output_types(params[:output_types])
-        bin_path = Helper::AnalyzerHelper.install(params)
-        @success = Helper::SpmHelper.analize(bin_path: bin_path, params: params)
-        @vulnerabilities = Helper::AnalyzerHelper.parse_report("#{params[:output_directory]}/SPM/report/*.sarif")
-        on_exit(params)
+        params[:output_types] = Helper::ConfigurationHelper.parse_output_types(params[:output_types])
+        bin_path = Helper::ConfigurationHelper.install(params)
+
+        spm_analysis = Helper::AnalyzerHelper.analize_packages(bin_path: bin_path, params: params)
+        pods_analysis = Helper::AnalyzerHelper.analize_pods(bin_path: bin_path, params: params)
+
+        on_exit(params: params, result: (spm_analysis && pods_analysis))
       end
 
-      def self.on_exit(params)
-        Helper::AnalyzerHelper.clean_up(params)
-        say_goodbye = "🦠 There are #{@vulnerabilities} potential vulnerabilities. " \
-                      'Check out the report for further investigation.'
-        @success ? UI.important(say_goodbye) : UI.crash!(say_goodbye)
+      def self.on_exit(params:, result:)
+        Helper::ConfigurationHelper.clean_up(params)
+        say_goodbye = '✨ Check out the report for further investigation.'
+        result ? UI.important(say_goodbye) : UI.user_error!(say_goodbye)
       end
 
       #####################################################
@@ -36,17 +36,12 @@ module Fastlane
 
       def self.example_code
         [
-          vulnerabilities_count = dependency_check_ios_analyzer(
+          dependency_check_ios_analyzer(
             project_name: 'SampleProject',
-            skip_pods_analysis: true,
             output_types: 'html, junit',
-            fail_on_cvss: 7
+            fail_on_cvss: 3
           )
         ]
-      end
-
-      def self.return_value
-        @vulnerabilities
       end
 
       def self.available_options
@@ -69,14 +64,14 @@ module Fastlane
           ),
           FastlaneCore::ConfigItem.new(
             key: :spm_checkouts_path,
-            description: 'Path to Swift Packages, if they are resolved',
+            description: 'Path to Swift Packages, if resolved',
             optional: true,
             is_string: true,
             type: String
           ),
           FastlaneCore::ConfigItem.new(
             key: :pod_file_lock_path,
-            description: 'Path to the Podfile.lock file',
+            description: 'Path to the Podfile.lock file, if exists',
             optional: true,
             is_string: true,
             type: String

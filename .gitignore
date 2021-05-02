@@ -11,11 +11,13 @@ fastlane/report.xml
 coverage
 test-results
 .DS_Store
+Podfile.lock
 /vendor/
 /dependency-check/
 /Index/
 /sample-project/dependency-check/
 /sample-project/Index/
+/sample-project/Pods/
 /sample-project/DerivedData/
 /sample-project/build/
 /Logs/
