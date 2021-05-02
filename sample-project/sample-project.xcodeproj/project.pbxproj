@@ -7,17 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E37DA12CEB9AF776D6EF684 /* libPods-sample-project.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E1197FC229098420600BCA6A /* libPods-sample-project.a */; };
 		E14EA2B6263DE90000CF0DE0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14EA2B5263DE90000CF0DE0 /* AppDelegate.swift */; };
 		E14EA2B8263DE90000CF0DE0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14EA2B7263DE90000CF0DE0 /* SceneDelegate.swift */; };
 		E14EA2BA263DE90000CF0DE0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14EA2B9263DE90000CF0DE0 /* ViewController.swift */; };
 		E14EA2BD263DE90000CF0DE0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E14EA2BB263DE90000CF0DE0 /* Main.storyboard */; };
 		E14EA2BF263DE90600CF0DE0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E14EA2BE263DE90600CF0DE0 /* Assets.xcassets */; };
 		E14EA2C2263DE90600CF0DE0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E14EA2C0263DE90600CF0DE0 /* LaunchScreen.storyboard */; };
-		E194DAEC263DF3E700497241 /* AFNetworking in Frameworks */ = {isa = PBXBuildFile; productRef = E194DAEB263DF3E700497241 /* AFNetworking */; };
-		E194DAF0263DF40C00497241 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = E194DAEF263DF40C00497241 /* SwiftyJSON */; };
+		E194DAEC263DF3E700497241 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = E194DAEB263DF3E700497241 /* SwiftPackageProductDependency */; };
+		E194DAF0263DF40C00497241 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = E194DAEF263DF40C00497241 /* SwiftPackageProductDependency */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		02698B2D832634D658B575C4 /* Pods-sample-project.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-sample-project.release.xcconfig"; path = "Target Support Files/Pods-sample-project/Pods-sample-project.release.xcconfig"; sourceTree = "<group>"; };
+		657CDC4C3EE92340C6DDB0DC /* Pods-sample-project.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-sample-project.debug.xcconfig"; path = "Target Support Files/Pods-sample-project/Pods-sample-project.debug.xcconfig"; sourceTree = "<group>"; };
+		E1197FC229098420600BCA6A /* libPods-sample-project.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-sample-project.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E14EA2B2263DE90000CF0DE0 /* sample-project.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "sample-project.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E14EA2B5263DE90000CF0DE0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E14EA2B7263DE90000CF0DE0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -33,19 +37,40 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E194DAF0263DF40C00497241 /* SwiftyJSON in Frameworks */,
-				E194DAEC263DF3E700497241 /* AFNetworking in Frameworks */,
+				E194DAF0263DF40C00497241 /* BuildFile in Frameworks */,
+				E194DAEC263DF3E700497241 /* BuildFile in Frameworks */,
+				1E37DA12CEB9AF776D6EF684 /* libPods-sample-project.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3FEC514EBB5AFD558126758A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				657CDC4C3EE92340C6DDB0DC /* Pods-sample-project.debug.xcconfig */,
+				02698B2D832634D658B575C4 /* Pods-sample-project.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		68B6190F3ABEAA843E5CC087 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E1197FC229098420600BCA6A /* libPods-sample-project.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		E14EA2A9263DE90000CF0DE0 = {
 			isa = PBXGroup;
 			children = (
 				E14EA2B4263DE90000CF0DE0 /* sample-project */,
 				E14EA2B3263DE90000CF0DE0 /* Products */,
+				3FEC514EBB5AFD558126758A /* Pods */,
+				68B6190F3ABEAA843E5CC087 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -78,6 +103,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E14EA2C6263DE90600CF0DE0 /* Build configuration list for PBXNativeTarget "sample-project" */;
 			buildPhases = (
+				43B8C92C171083E786C59411 /* [CP] Check Pods Manifest.lock */,
 				E14EA2AE263DE90000CF0DE0 /* Sources */,
 				E14EA2AF263DE90000CF0DE0 /* Frameworks */,
 				E14EA2B0263DE90000CF0DE0 /* Resources */,
@@ -88,8 +114,8 @@
 			);
 			name = "sample-project";
 			packageProductDependencies = (
-				E194DAEB263DF3E700497241 /* AFNetworking */,
-				E194DAEF263DF40C00497241 /* SwiftyJSON */,
+				E194DAEB263DF3E700497241 /* SwiftPackageProductDependency */,
+				E194DAEF263DF40C00497241 /* SwiftPackageProductDependency */,
 			);
 			productName = "sample-project";
 			productReference = E14EA2B2263DE90000CF0DE0 /* sample-project.app */;
@@ -119,8 +145,8 @@
 			);
 			mainGroup = E14EA2A9263DE90000CF0DE0;
 			packageReferences = (
-				E194DAEA263DF3E700497241 /* XCRemoteSwiftPackageReference "AFNetworking" */,
-				E194DAEE263DF40B00497241 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
+				E194DAEA263DF3E700497241 /* RemoteSwiftPackageReference */,
+				E194DAEE263DF40B00497241 /* RemoteSwiftPackageReference */,
 			);
 			productRefGroup = E14EA2B3263DE90000CF0DE0 /* Products */;
 			projectDirPath = "";
@@ -143,6 +169,31 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		43B8C92C171083E786C59411 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-sample-project-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E14EA2AE263DE90000CF0DE0 /* Sources */ = {
@@ -295,6 +346,7 @@
 		};
 		E14EA2C7263DE90600CF0DE0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 657CDC4C3EE92340C6DDB0DC /* Pods-sample-project.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -313,6 +365,7 @@
 		};
 		E14EA2C8263DE90600CF0DE0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 02698B2D832634D658B575C4 /* Pods-sample-project.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -353,7 +406,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		E194DAEA263DF3E700497241 /* XCRemoteSwiftPackageReference "AFNetworking" */ = {
+		E194DAEA263DF3E700497241 /* RemoteSwiftPackageReference */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/AFNetworking/AFNetworking";
 			requirement = {
@@ -361,7 +414,7 @@
 				minimumVersion = 4.0.1;
 			};
 		};
-		E194DAEE263DF40B00497241 /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
+		E194DAEE263DF40B00497241 /* RemoteSwiftPackageReference */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON";
 			requirement = {
@@ -372,14 +425,14 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		E194DAEB263DF3E700497241 /* AFNetworking */ = {
+		E194DAEB263DF3E700497241 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E194DAEA263DF3E700497241 /* XCRemoteSwiftPackageReference "AFNetworking" */;
+			package = E194DAEA263DF3E700497241 /* RemoteSwiftPackageReference */;
 			productName = AFNetworking;
 		};
-		E194DAEF263DF40C00497241 /* SwiftyJSON */ = {
+		E194DAEF263DF40C00497241 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E194DAEE263DF40B00497241 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
+			package = E194DAEE263DF40B00497241 /* RemoteSwiftPackageReference */;
 			productName = SwiftyJSON;
 		};
 /* End XCSwiftPackageProductDependency section */

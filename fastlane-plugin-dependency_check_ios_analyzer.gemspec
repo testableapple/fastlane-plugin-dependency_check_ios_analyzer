@@ -20,6 +20,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency('curb')
   spec.add_dependency('rubyzip')
+  spec.add_dependency('cocoapods')
   spec.add_development_dependency('pry')
   spec.add_development_dependency('bundler')
   spec.add_development_dependency('rspec')

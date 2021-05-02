@@ -12,21 +12,31 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Bundler
-        run: |
-          bundle config path vendor/bundle
-          bundle check || bundle install --jobs 4 --retry 3
+      - run: bundle install --jobs 4 --retry 3
 
-      - name: Fasterer
-        run: bundle exec fasterer
+      - run: bundle exec fasterer
 
-      - name: Fastlane
+      - name: Test Pods
+        run: bundle exec fastlane test_on_fail
+
+      - uses: actions/upload-artifact@v2.2.3
+        if: ${{ always() }}
+        with:
+          name: "Vulnerable report"
+          path: "dependency-check/CocoaPods/report/"
+
+      - name: Test SPM and Pods
         run: bundle exec fastlane test
 
-      - name: "Upload DependencyCheck Reports"
-        uses: actions/upload-artifact@v2.2.3
+      - uses: actions/upload-artifact@v2.2.3
         if: ${{ always() }}
-        continue-on-error: true
         with:
-          name: "DependencyCheck report"
-          path: 'dependency-check/SPM/report/'
+          name: "Pods report"
+          path: "dependency-check/CocoaPods/report/"
+
+      - uses: actions/upload-artifact@v2.2.3
+        if: ${{ always() }}
+        with:
+          name: "SPM report"
+          path: "dependency-check/SwiftPackages/report/"
+

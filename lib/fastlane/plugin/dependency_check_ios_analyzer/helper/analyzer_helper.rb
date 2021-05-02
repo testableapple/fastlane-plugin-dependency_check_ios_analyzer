@@ -1,90 +1,111 @@
-require 'json'
-require 'curb'
-require 'zip'
-
 module Fastlane
   UI = FastlaneCore::UI unless Fastlane.const_defined?("UI")
 
   module Helper
     class AnalyzerHelper
-      def self.install(params)
-        repo = 'https://github.com/jeremylong/DependencyCheck'
-        name = 'dependency-check'
-        version = params[:cli_version] ? params[:cli_version] : '6.1.6'
-        gpg_key = params[:gpg_key] ? params[:gpg_key] : 'F9514E84AE3708288374BBBE097586CFEA37F9A6'
-        base_url = "#{repo}/releases/download/v#{version}/#{name}-#{version}-release"
-        bin_path = "#{params[:output_directory]}/#{name}/bin/#{name}.sh"
-        zip_path = "#{params[:output_directory]}/#{name}.zip"
-        asc_path = "#{zip_path}.asc"
+      def self.analize_packages(bin_path:, params:)
+        return true if params[:skip_spm_analysis]
 
-        unless File.exist?(bin_path)
-          FileUtils.mkdir_p(params[:output_directory])
+        path_to_report = "#{params[:output_directory]}/SwiftPackages"
+        clean_reports_folder(path_to_report)
+        params[:spm_checkouts_path] = resolve_package_dependencies(params)
 
-          unless File.exist?(zip_path)
-            zip_url = "#{base_url}.zip"
-            UI.message("🚀 Downloading DependencyCheck: #{zip_url}")
-            curl = Curl.get(zip_url) { |curl| curl.follow_location = true }
-            File.open(zip_path, 'w+') { |f| f.write(curl.body_str) }
-          end
-
-          asc_url = "#{base_url}.zip.asc"
-          UI.message("🚀 Downloading associated GPG signature file: #{asc_url}")
-          curl = Curl.get(asc_url) { |curl| curl.follow_location = true }
-          File.open(asc_path, 'w+') { |f| f.write(curl.body_str) }
-
-          verify_cryptographic_integrity(asc_path: asc_path, gpg_key: gpg_key)
-
-          unzip(file: zip_path, params: params)
-
-          FileUtils.rm_rf(zip_path)
-          FileUtils.rm_rf(asc_path)
-        end
-
-        bin_path
+        check_dependencies(
+          params: params,
+          bin_path: bin_path,
+          path_to_report: path_to_report,
+          destination: params[:spm_checkouts_path]
+        )
       end
 
-      def self.parse_output_types(output_types)
-        list = output_types.delete(' ').split(',')
-        list << 'sarif' unless list.include?('sarif')
-        report_types = ''
-        list.each { |output_type| report_types += " --format #{output_type.upcase}" }
+      def self.analize_pods(bin_path:, params:)
+        return true if params[:skip_pods_analysis]
 
-        UI.message("🎥 Output types: #{list}")
-        report_types
-      end
+        path_to_report = "#{params[:output_directory]}/CocoaPods"
+        clean_reports_folder(path_to_report)
+        params[:pod_file_lock_path] = resolve_pods_dependencies(params)
 
-      def self.parse_report(report)
-        if Dir[report].empty?
-          UI.crash!('Something went wrong. There is no report to analyze. Consider reporting a bug.')
-        end
-
-        JSON.parse(File.read(Dir[report].first))['runs'][0]['results'].size
-      end
-
-      def self.clean_up(params)
-        return if params[:keep_binary_on_exit]
-
-        FileUtils.rm_rf("#{params[:output_directory]}/dependency-check")
+        check_dependencies(
+          params: params,
+          bin_path: bin_path,
+          path_to_report: path_to_report,
+          destination: params[:pod_file_lock_path]
+        )
       end
 
       private
 
-      def self.unzip(file:, params:)
-        Zip::File.open(file) do |zip_file|
-          zip_file.each do |f|
-            fpath = File.join(params[:output_directory], f.name)
-            zip_file.extract(f, fpath) unless File.exist?(fpath)
-          end
+      def self.clean_reports_folder(path)
+        FileUtils.rm_rf(path)
+        FileUtils.mkdir_p(path)
+      end
+
+      def self.check_dependencies(params:, bin_path:, path_to_report:, destination:)
+        # Specify verbose output
+        verbose = params[:verbose] ? " --log #{params[:verbose]}" : ''
+
+        # Make the script executable
+        Actions.sh("chmod 775 #{bin_path}")
+
+        # Execute dependency-check
+        begin
+          Actions.sh(
+            "#{bin_path}" \
+              " --enableExperimental" \
+              " --disableBundleAudit" \
+              " --prettyPrint" \
+              " --project #{params[:project_name]}" \
+              " --out #{path_to_report}/report" \
+              " --failOnCVSS #{params[:fail_on_cvss]}" \
+              " --scan #{destination}" \
+              "#{params[:output_types]}" \
+              "#{verbose}"
+          )
+          true
+        rescue
+          false
         end
       end
 
-      # https://jeremylong.github.io/DependencyCheck/dependency-check-cli/
-      def self.verify_cryptographic_integrity(asc_path:, gpg_key:)
-        UI.message("🕵️  Verifying the cryptographic integrity")
-        # Import the GPG key used to sign all DependencyCheck releases
-        Actions.sh("gpg --keyserver hkp://keys.gnupg.net --recv-keys #{gpg_key}")
-        # Verify the cryptographic integrity
-        Actions.sh("gpg --verify #{asc_path}")
+      def self.parse_the_report(report)
+        UI.crash!('There is no report to analyze. Consider reporting a bug.') if Dir[report].empty?
+
+        JSON.parse(File.read(Dir[report].first))['runs'][0]['results'].size
+      end
+
+      def self.resolve_package_dependencies(params)
+        return params[:spm_checkouts_path] if params[:spm_checkouts_path]
+
+        UI.user_error!("xcodebuild not installed") if `which xcodebuild`.length.zero?
+
+        checkouts_path = "#{params[:output_directory]}/SwiftPackages/checkouts"
+        checkouts_path = "#{Dir.pwd}/#{checkouts_path}" unless params[:output_directory].include?(Dir.pwd)
+
+        if params[:project_path]
+          Actions.sh("cd #{params[:project_path]} && " \
+                     "set -o pipefail && " \
+                     "xcodebuild -resolvePackageDependencies -clonedSourcePackagesDirPath #{checkouts_path}")
+        else
+          Actions.sh("set -o pipefail && " \
+                     "xcodebuild -resolvePackageDependencies -clonedSourcePackagesDirPath #{checkouts_path}")
+        end
+
+        UI.message("🎉 SPM checkouts path: #{checkouts_path}")
+        checkouts_path
+      end
+
+      def self.resolve_pods_dependencies(params)
+        return params[:pod_file_lock_path] if params[:pod_file_lock_path]
+
+        UI.user_error!("pod not installed") if `which pod`.length.zero?
+
+        if params[:project_path]
+          Actions.sh("cd #{params[:project_path]} && set -o pipefail && pod install")
+        else
+          Actions.sh("set -o pipefail && pod install")
+        end
+
+        params[:project_path] ? "#{params[:project_path]}/Podfile.lock" : 'Podfile.lock'
       end
     end
   end
