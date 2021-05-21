@@ -115,11 +115,11 @@ module Fastlane
             type: String
           ),
           FastlaneCore::ConfigItem.new(
-            key: :gpg_key,
-            description: 'Overwrite the GPG key to verify the cryptographic integrity of the requested cli_version',
+            key: :verify_integrity,
+            description: 'Verify the cryptographic integrity of the tool before starting an analysis',
             optional: true,
-            is_string: true,
-            type: String
+            is_string: false,
+            type: Boolean
           ),
           FastlaneCore::ConfigItem.new(
             key: :verbose,

@@ -11,11 +11,9 @@ module Fastlane
         repo = 'https://github.com/jeremylong/DependencyCheck'
         name = 'dependency-check'
         version = params[:cli_version] ? params[:cli_version] : '6.1.6'
-        gpg_key = params[:gpg_key] ? params[:gpg_key] : 'F9514E84AE3708288374BBBE097586CFEA37F9A6'
         base_url = "#{repo}/releases/download/v#{version}/#{name}-#{version}-release"
         bin_path = "#{params[:output_directory]}/#{name}/bin/#{name}.sh"
         zip_path = "#{params[:output_directory]}/#{name}.zip"
-        asc_path = "#{zip_path}.asc"
 
         unless File.exist?(bin_path)
           FileUtils.mkdir_p(params[:output_directory])
@@ -27,17 +25,13 @@ module Fastlane
             File.open(zip_path, 'w+') { |f| f.write(curl.body_str) }
           end
 
-          asc_url = "#{base_url}.zip.asc"
-          UI.message("🚀 Downloading associated GPG signature file: #{asc_url}")
-          curl = Curl.get(asc_url) { |curl| curl.follow_location = true }
-          File.open(asc_path, 'w+') { |f| f.write(curl.body_str) }
-
-          verify_cryptographic_integrity(asc_path: asc_path, gpg_key: gpg_key)
+          if params[:verify_integrity]
+            verify_cryptographic_integrity(zip_path: zip_path, base_url: base_url)
+          end
 
           unzip(file: zip_path, params: params)
 
           FileUtils.rm_rf(zip_path)
-          FileUtils.rm_rf(asc_path)
         end
 
         bin_path
@@ -70,13 +64,24 @@ module Fastlane
         end
       end
 
-      # https://jeremylong.github.io/DependencyCheck/dependency-check-cli/
-      def self.verify_cryptographic_integrity(asc_path:, gpg_key:)
+      def self.verify_cryptographic_integrity(zip_path:, base_url:)
+        asc_url = "#{base_url}.zip.asc"
+        UI.message("🚀 Downloading associated GPG signature file: #{asc_url}")
+        curl = Curl.get(asc_url) { |curl| curl.follow_location = true }
+
+        asc_path = "#{zip_path}.asc"
+        File.open(asc_path, 'w+') { |f| f.write(curl.body_str) }
+
+        # https://jeremylong.github.io/DependencyCheck/dependency-check-cli/
+        gpg_key = 'F9514E84AE3708288374BBBE097586CFEA37F9A6'
+
         UI.message("🕵️  Verifying the cryptographic integrity")
         # Import the GPG key used to sign all DependencyCheck releases
         Actions.sh("gpg --keyserver hkp://keys.gnupg.net --recv-keys #{gpg_key}")
         # Verify the cryptographic integrity
         Actions.sh("gpg --verify #{asc_path}")
+
+        FileUtils.rm_rf(asc_path)
       end
     end
   end

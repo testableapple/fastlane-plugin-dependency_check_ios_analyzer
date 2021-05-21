@@ -3,6 +3,7 @@ lane :test do
     project_name: 'SampleProject',
     project_path: 'sample-project',
     output_types: 'all',
+    keep_binary_on_exit: false,
     fail_on_cvss: 7
   )
 end
@@ -16,8 +17,17 @@ lane :test_on_fail do
       output_types: 'html, junit',
       fail_on_cvss: 3
     )
-    raise("Analyzer missed the vulnerability!")
   rescue
-    puts("it's all good!")
+    UI.important("It's all good!")
+    next
   end
+
+  UI.user_error!("Analyzer missed the vulnerability!")
+end
+
+lane :verify_cryptographic_integrity do
+  dependency_check_ios_analyzer(
+    project_path: 'sample-project',
+    verify_integrity: true
+  )
 end
