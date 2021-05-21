@@ -21,7 +21,7 @@ This analyzer is considered experimental. While it may be useful and provide val
 | `output_directory` | The directory in which all reports will be stored | `dependency-check` |
 | `output_types` | Comma separated list of the output types (e.g. `html`, `xml`, `csv`, `json`, `junit`, `sarif`, `all`) | `sarif` |
 | `cli_version` | Overwrite the version of `DependencyCheck` analyzer | `6.1.6` |
-| `gpg_key` | Overwrite the GPG key to verify the cryptographic integrity of the requested `cli_version` | |
+| `verify_integrity` | Verify the cryptographic integrity of the tool before starting an analysis | `false` |
 | `verbose` | The file path to write verbose logging information | |
 | `fail_on_cvss` | Specifies if the build should be failed if a CVSS score above a specified level is identified. Since the CVSS scores are 0-10, by default the build will never fail | `11` |
 | `junit_fail_on_cvss` | Specifies the CVSS score that is considered a failure when generating the junit report | `0` |

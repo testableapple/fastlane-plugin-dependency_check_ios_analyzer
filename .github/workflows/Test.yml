@@ -40,3 +40,5 @@ jobs:
           name: "SPM report"
           path: "dependency-check/SwiftPackages/report/"
 
+      - name: Verify the cryptographic integrity
+        run: bundle exec fastlane verify_cryptographic_integrity
