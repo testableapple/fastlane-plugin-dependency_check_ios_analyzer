@@ -24,10 +24,3 @@ lane :test_on_fail do
 
   UI.user_error!("Analyzer missed the vulnerability!")
 end
-
-lane :verify_cryptographic_integrity do
-  dependency_check_ios_analyzer(
-    project_path: 'sample-project',
-    verify_integrity: true
-  )
-end
