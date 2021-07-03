@@ -115,13 +115,6 @@ module Fastlane
             type: String
           ),
           FastlaneCore::ConfigItem.new(
-            key: :verify_integrity,
-            description: 'Verify the cryptographic integrity of the tool before starting an analysis',
-            optional: true,
-            is_string: false,
-            type: Boolean
-          ),
-          FastlaneCore::ConfigItem.new(
             key: :verbose,
             description: 'The file path to write verbose logging information',
             optional: true,
