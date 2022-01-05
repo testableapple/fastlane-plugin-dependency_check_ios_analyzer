@@ -145,6 +145,13 @@ module Fastlane
             default_value: true,
             is_string: false,
             type: Boolean
+          ),
+          FastlaneCore::ConfigItem.new(
+            key: :suppression,
+            description: 'Path to suppression file',
+            optional: true,
+            is_string: true,
+            type: String
           )
         ]
       end
