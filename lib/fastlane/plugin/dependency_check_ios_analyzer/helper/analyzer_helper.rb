@@ -44,6 +44,8 @@ module Fastlane
         # Specify verbose output
         verbose = params[:verbose] ? " --log #{params[:verbose]}" : ''
 
+        suppression = params[:suppression] ? " --suppression #{params[:suppression]}" : ''
+
         # Make the script executable
         Actions.sh("chmod 775 #{bin_path}")
 
@@ -59,7 +61,8 @@ module Fastlane
               " --failOnCVSS #{params[:fail_on_cvss]}" \
               " --scan #{destination}" \
               "#{params[:output_types]}" \
-              "#{verbose}"
+              "#{verbose}" \
+              "#{suppression}"
           )
           true
         rescue
