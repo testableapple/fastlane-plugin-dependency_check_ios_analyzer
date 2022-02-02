@@ -25,6 +25,7 @@ This analyzer is considered experimental. While it may be useful and provide val
 | `fail_on_cvss` | Specifies if the build should be failed if a CVSS score above a specified level is identified. Since the CVSS scores are 0-10, by default the build will never fail | `11` |
 | `junit_fail_on_cvss` | Specifies the CVSS score that is considered a failure when generating the junit report | `0` |
 | `keep_binary_on_exit` | Keep `DependencyCheck` binary and data on exit | `true` |
+| `suppression` | Path to [suppression file](https://jeremylong.github.io/DependencyCheck/general/suppression.html) | |
 
 ## Requirements
 
