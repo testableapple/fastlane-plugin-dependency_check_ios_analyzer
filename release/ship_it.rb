@@ -4,7 +4,7 @@ if File.file?(gem_path)
   puts "Publishing gem '#{gem_ver}', right? 🤔"
   if gets.to_s.downcase =~ /y/
     puts 'okie dokie 🚀'
-    output = `gem push #{gem_path} -k alteral`
+    output = `gem push #{gem_path}`
     puts output
     if output.include?('Successfully registered gem')
       puts `git tag #{gem_ver} && git push origin #{gem_ver}`
