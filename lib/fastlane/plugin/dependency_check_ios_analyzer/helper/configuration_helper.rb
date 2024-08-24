@@ -10,8 +10,7 @@ module Fastlane
       def self.install(params)
         repo = 'https://github.com/jeremylong/DependencyCheck'
         name = 'dependency-check'
-        version = params[:cli_version] ? params[:cli_version] : '6.2.2'
-        base_url = "#{repo}/releases/download/v#{version}/#{name}-#{version}-release"
+        base_url = "#{repo}/releases/download/v#{params[:cli_version]}/#{name}-#{params[:cli_version]}-release"
         bin_path = "#{params[:output_directory]}/#{name}/bin/#{name}.sh"
         zip_path = "#{params[:output_directory]}/#{name}.zip"
 

@@ -109,9 +109,10 @@ module Fastlane
           ),
           FastlaneCore::ConfigItem.new(
             key: :cli_version,
-            description: 'Overwrite the version of DependencyCheck analyzer. Not recommended',
+            description: 'Overwrite the version of DependencyCheck analyzer',
             optional: true,
             is_string: true,
+            default_value: '10.0.3',
             type: String
           ),
           FastlaneCore::ConfigItem.new(

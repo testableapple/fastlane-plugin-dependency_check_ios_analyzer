@@ -20,7 +20,7 @@ This analyzer is considered experimental. While it may be useful and provide val
 | `project_name` | The project's name | `DependencyCheck` |
 | `output_directory` | The directory in which all reports will be stored | `dependency-check` |
 | `output_types` | Comma separated list of the output types (e.g. `html`, `xml`, `csv`, `json`, `junit`, `sarif`, `all`) | `sarif` |
-| `cli_version` | Overwrite the version of `DependencyCheck` analyzer | `6.2.2` |
+| `cli_version` | Overwrite the version of `DependencyCheck` analyzer | `10.0.3` |
 | `verbose` | The file path to write verbose logging information | |
 | `fail_on_cvss` | Specifies if the build should be failed if a CVSS score above a specified level is identified. Since the CVSS scores are 0-10, by default the build will never fail | `11` |
 | `junit_fail_on_cvss` | Specifies the CVSS score that is considered a failure when generating the junit report | `0` |
