@@ -21,6 +21,11 @@ module Fastlane
       def self.analize_pods(bin_path:, params:)
         return true if params[:skip_pods_analysis]
 
+        podfile_path = params[:project_path] ? "#{params[:project_path]}/Podfile" : 'Podfile'
+        podfile_exists = File.file?(podfile_path)
+
+        UI.user_error!('Could not find a Podfile path') if !podfile_exists && params[:pod_file_lock_path].nil?
+
         path_to_report = "#{params[:output_directory]}/CocoaPods"
         clean_reports_folder(path_to_report)
         params[:pod_file_lock_path] = resolve_pods_dependencies(params)
